@@ -105,7 +105,7 @@ void* Plugin::Interface::H264Interface::create(obs_data_t* settings, obs_encoder
 		AMF_LOG_INFO("Starting up...");
 		enc = new Plugin::Interface::H264Interface(settings, encoder);
 		return enc;
-	} catch (std::exception e) {
+	} catch (const std::exception &e) {
 		AMF_LOG_ERROR("Exception: %s", e.what());
 		AMF_LOG_ERROR("Unable to create Encoder, see log for more information.");
 		if (enc)
@@ -126,7 +126,7 @@ void Plugin::Interface::H264Interface::destroy(void* data) {
 		AMF_LOG_INFO("Shutting down...");
 		Plugin::Interface::H264Interface* enc = static_cast<Plugin::Interface::H264Interface*>(data);
 		delete enc;
-	} catch (std::exception e) {
+	} catch (const std::exception &e) {
 		AMF_LOG_ERROR("Exception: %s", e.what());
 		AMF_LOG_ERROR("Unable to destroy Encoder, see log for more information.");
 	} catch (...) {
@@ -139,7 +139,7 @@ void Plugin::Interface::H264Interface::destroy(void* data) {
 bool Plugin::Interface::H264Interface::encode(void *data, struct encoder_frame *frame, struct encoder_packet *packet, bool *received_packet) {
 	try {
 		return static_cast<Plugin::Interface::H264Interface*>(data)->encode(frame, packet, received_packet);
-	} catch (std::exception e) {
+	} catch (const std::exception &e) {
 		AMF_LOG_ERROR("Exception: %s", e.what());
 		AMF_LOG_ERROR("Unable to encode, see log for more information.");
 		return false;
