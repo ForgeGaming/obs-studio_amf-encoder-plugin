@@ -80,5 +80,20 @@ namespace Plugin {
 			amf::AMFTrace* m_AMFTrace;
 			amf::AMFDebug* m_AMFDebug;
 		};
+
+		struct exception : std::exception {
+			DStr str;
+
+			explicit exception(DStr &&str) : str(std::move(str))
+			{}
+
+			explicit exception(DStr &&str, int) : str(std::move(str))
+			{}
+
+			inline const char *what() const override
+			{
+				return str;
+			}
+		};
 	}
 }

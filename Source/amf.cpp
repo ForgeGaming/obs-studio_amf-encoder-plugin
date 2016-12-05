@@ -95,10 +95,10 @@ Plugin::AMD::AMF::AMF() {
 	m_AMFModule = LoadLibraryW(AMF_DLL_NAME);
 	if (!m_AMFModule) {
 		DWORD error = GetLastError();
-		std::vector<char> buf(1024);
-		sprintf(buf.data(), "Unable to load '%ls', error code %ld.", AMF_DLL_NAME, error);
-		AMF_LOG_ERROR("%s", buf.data());
-		throw std::exception(buf.data(), error);
+		DStr msg;
+		dstr_printf(msg, "Unable to load '%ls', error code %ld.", AMF_DLL_NAME, error);
+		AMF_LOG_ERROR("%s", msg->array);
+		throw exception(std::move(msg)/*, error*/);
 	}
 	AMF_LOG_DEBUG("<Plugin::AMD::AMF::AMF> Loaded '%ls'.", AMF_DLL_NAME);
 	#ifdef _WIN32 // Windows: Get Product Version
@@ -134,10 +134,10 @@ Plugin::AMD::AMF::AMF() {
 	AMFQueryVersion = (AMFQueryVersion_Fn)GetProcAddress(m_AMFModule, AMF_QUERY_VERSION_FUNCTION_NAME);
 	if (!AMFQueryVersion) {
 		DWORD error = GetLastError();
-		std::vector<char> buf(1024);
-		sprintf(buf.data(), "<Plugin::AMD::AMF::AMF> Finding Address of Function '%s' failed with error code %ld.", AMF_QUERY_VERSION_FUNCTION_NAME, error);
-		AMF_LOG_ERROR("%s", buf.data());
-		throw std::exception(buf.data(), error);
+		DStr msg;
+		dstr_printf(msg, "<Plugin::AMD::AMF::AMF> Finding Address of Function '%s' failed with error code %ld.", AMF_QUERY_VERSION_FUNCTION_NAME, error);
+		AMF_LOG_ERROR("%s", msg->array);
+		throw exception(std::move(msg), error);
 	}
 	/// Query Runtime Version
 	m_AMFVersion_Compiler = AMF_FULL_VERSION;
@@ -150,10 +150,10 @@ Plugin::AMD::AMF::AMF() {
 	AMFInit = (AMFInit_Fn)GetProcAddress(m_AMFModule, AMF_INIT_FUNCTION_NAME);
 	if (!AMFInit) {
 		DWORD error = GetLastError();
-		std::vector<char> buf(1024);
-		sprintf(buf.data(), "<Plugin::AMD::AMF::AMF> Finding Address of Function '%s' failed with error code %ld.", AMF_INIT_FUNCTION_NAME, error);
-		AMF_LOG_ERROR("%s", buf.data());
-		throw std::exception(buf.data(), error);
+		DStr buf;
+		dstr_printf(buf, "<Plugin::AMD::AMF::AMF> Finding Address of Function '%s' failed with error code %ld.", AMF_INIT_FUNCTION_NAME, error);
+		AMF_LOG_ERROR("%s", buf->array);
+		throw exception(std::move(buf), error);
 	} else {
 		res = AMFInit(m_AMFVersion_Runtime, &m_AMFFactory);
 		if (res != AMF_OK)
