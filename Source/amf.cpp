@@ -97,7 +97,7 @@ Plugin::AMD::AMF::AMF() {
 		DWORD error = GetLastError();
 		DStr msg;
 		dstr_printf(msg, "Unable to load '%ls', error code %ld.", AMF_DLL_NAME, error);
-		AMF_LOG_ERROR("%s", msg->array);
+		AMF_LOG_WARNING("%s", msg->array);
 		throw exception(std::move(msg)/*, error*/);
 	}
 	AMF_LOG_DEBUG("<Plugin::AMD::AMF::AMF> Loaded '%ls'.", AMF_DLL_NAME);

@@ -63,7 +63,7 @@ MODULE_EXPORT bool obs_module_load(void) {
 	try {
 		Plugin::AMD::AMF::GetInstance();
 	} catch (std::exception& e) {
-		AMF_LOG_ERROR("%s", e.what());
+		AMF_LOG_WARNING("%s", e.what());
 		return true;
 	} catch (std::exception* e) {
 		AMF_LOG_ERROR("%s", e->what());
@@ -78,7 +78,7 @@ MODULE_EXPORT bool obs_module_load(void) {
 	try {
 		Plugin::API::Base::Initialize();
 	} catch (std::exception& e) {
-		AMF_LOG_ERROR("%s", e.what());
+		AMF_LOG_WARNING("%s", e.what());
 		return true;
 	} catch (std::exception* e) {
 		AMF_LOG_ERROR("%s", e->what());
@@ -93,7 +93,7 @@ MODULE_EXPORT bool obs_module_load(void) {
 	try {
 		Plugin::Interface::H264Interface::encoder_register();
 	} catch (std::exception& e) {
-		AMF_LOG_ERROR("%s", e.what());
+		AMF_LOG_WARNING("%s", e.what());
 		return true;
 	} catch (std::exception* e) {
 		AMF_LOG_ERROR("%s", e->what());
