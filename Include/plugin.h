@@ -38,6 +38,8 @@ SOFTWARE.
 #include "libobs/obs-module.h"
 #include "libobs/obs-encoder.h"
 
+#include "libobs/util/dstr.hpp"
+
 MODULE_EXTERN const char *obs_module_text_multi(const char *val, uint8_t depth = (uint8_t)1);
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,10 +68,10 @@ MODULE_EXTERN const char *obs_module_text_multi(const char *val, uint8_t depth =
 #define TEXT_AMF_UTIL(x)				(TEXT_AMF("Util." ## x))
 
 #define ThrowExceptionWithAMFError(format, res, ...) {\
-	std::vector<char> _throwexceptionwithamferror_buf(8192);\
-	sprintf_s(_throwexceptionwithamferror_buf.data(), _throwexceptionwithamferror_buf.size(), format, ##__VA_ARGS__, Plugin::AMD::AMF::GetInstance()->GetTrace()->GetResultText(res), res);\
-	AMF_LOG_WARNING("%s", _throwexceptionwithamferror_buf.data()); \
-	throw std::exception(_throwexceptionwithamferror_buf.data()); \
+	DStr exception_buf_;\
+	dstr_printf(exception_buf_, format, ##__VA_ARGS__, Plugin::AMD::AMF::GetInstance()->GetTrace()->GetResultText(res), res);\
+	AMF_LOG_WARNING("%s", exception_buf_->array); \
+	throw exception(std::move(exception_buf_)); \
 }
 
 #ifndef __FUNCTION_NAME__
