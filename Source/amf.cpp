@@ -150,10 +150,10 @@ Plugin::AMD::AMF::AMF() {
 	AMFInit = (AMFInit_Fn)GetProcAddress(m_AMFModule, AMF_INIT_FUNCTION_NAME);
 	if (!AMFInit) {
 		DWORD error = GetLastError();
-		DStr buf;
-		dstr_printf(buf, "<Plugin::AMD::AMF::AMF> Finding Address of Function '%s' failed with error code %ld.", AMF_INIT_FUNCTION_NAME, error);
-		AMF_LOG_ERROR("%s", buf->array);
-		throw exception(std::move(buf), error);
+		DStr buf_;
+		dstr_printf(buf_, "<Plugin::AMD::AMF::AMF> Finding Address of Function '%s' failed with error code %ld.", AMF_INIT_FUNCTION_NAME, error);
+		AMF_LOG_ERROR("%s", buf_->array);
+		throw exception(std::move(buf_), error);
 	} else {
 		res = AMFInit(m_AMFVersion_Runtime, &m_AMFFactory);
 		if (res != AMF_OK)
