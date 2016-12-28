@@ -160,7 +160,7 @@ std::vector<Adapter> Plugin::API::Direct3D11::EnumerateAdapters() {
 	ATL::CComPtr<IDXGIFactory1> dxgiFactory;
 	HRESULT hr = dxgiInst->CreateDXGIFactory1(__uuidof(IDXGIFactory1), (void**)&dxgiFactory);
 	if (FAILED(hr))
-		throw std::exception("<" __FUNCTION_NAME__ "> Failed to enumerate adapters, error code %X.", hr);
+		ThrowFormattedException("<" __FUNCTION_NAME__ "> Failed to enumerate adapters, error code %X.", hr);
 
 	std::vector<Adapter> adapters;
 	IDXGIAdapter1* dxgiAdapter = nullptr;
@@ -214,11 +214,8 @@ void* Plugin::API::Direct3D11::CreateInstanceOnAdapter(Adapter adapter) {
 
 	ATL::CComPtr<IDXGIFactory1> dxgiFactory;
 	hr = dxgiInst->CreateDXGIFactory1(__uuidof(IDXGIFactory1), (void**)&dxgiFactory);
-	if (FAILED(hr)) {
-		std::vector<char> buf(1024);
-		std::sprintf(buf.data(), "<" __FUNCTION_NAME__ "> Failed to enumerate adapters, error code %X.", hr);
-		throw std::exception(buf.data());
-	}
+	if (FAILED(hr))
+		ThrowFormattedException("<" __FUNCTION_NAME__ "> Failed to enumerate adapters, error code %X.", hr);
 
 	LUID adapterLUID;
 	adapterLUID.LowPart = adapter.idLow;
@@ -281,11 +278,8 @@ void* Plugin::API::Direct3D11::CreateInstanceOnAdapter(Adapter adapter) {
 			AMF_LOG_WARNING("<" __FUNCTION_NAME__ "> Unable to create D3D11 device, error code %X (mode %d).", hr, c);
 		}
 	}
-	if (FAILED(hr)) {
-		std::vector<char> buf(1024);
-		std::sprintf(buf.data(), "<" __FUNCTION_NAME__ "> Unable to create D3D11 device, error code %X.", hr);
-		throw std::exception(buf.data());
-	}
+	if (FAILED(hr))
+		ThrowFormattedException("<" __FUNCTION_NAME__ "> Unable to create D3D11 device, error code %X.", hr);
 
 	Direct3D11Instance* instance = new Direct3D11Instance();
 	instance->factory = dxgiFactory;
@@ -306,19 +300,13 @@ Plugin::API::Adapter Plugin::API::Direct3D11::GetAdapterForInstance(void* pInsta
 
 	ATL::CComPtr<IDXGIAdapter> dxgiAdapter;
 	hr = instance->device->QueryInterface(&dxgiAdapter);
-	if (FAILED(hr)) {
-		std::vector<char> buf(1024);
-		std::sprintf(buf.data(), "<" __FUNCTION_NAME__ "> Failed to query Adapter from D3D11 device, error code %X.", hr);
-		throw std::exception(buf.data());
-	}
+	if (FAILED(hr))
+		ThrowFormattedException("<" __FUNCTION_NAME__ "> Failed to query Adapter from D3D11 device, error code %X.", hr);
 
 	DXGI_ADAPTER_DESC adapterDesc;
 	hr = dxgiAdapter->GetDesc(&adapterDesc);
-	if (FAILED(hr)) {
-		std::vector<char> buf(1024);
-		std::sprintf(buf.data(), "<" __FUNCTION_NAME__ "> Failed to get description from DXGI adapter, error code %X.", hr);
-		throw std::exception(buf.data());
-	}
+	if (FAILED(hr))
+		ThrowFormattedException("<" __FUNCTION_NAME__ "> Failed to get description from DXGI adapter, error code %X.", hr);
 
 	std::vector<char> descBuf(256);
 	wcstombs(descBuf.data(), adapterDesc.Description, descBuf.size());

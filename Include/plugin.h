@@ -42,6 +42,23 @@ SOFTWARE.
 
 MODULE_EXTERN const char *obs_module_text_multi(const char *val, uint8_t depth = (uint8_t)1);
 
+namespace Plugin {
+	struct exception : std::exception {
+		DStr str;
+
+		explicit exception(DStr &&str) : str(std::move(str))
+		{}
+
+		explicit exception(DStr &&str, int) : str(std::move(str))
+		{}
+
+		inline const char *what() const override
+		{
+			return str;
+		}
+	};
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Defines
 //////////////////////////////////////////////////////////////////////////
@@ -65,7 +82,13 @@ MODULE_EXTERN const char *obs_module_text_multi(const char *val, uint8_t depth =
 	DStr exception_buf_;\
 	dstr_printf(exception_buf_, format, ##__VA_ARGS__, Plugin::AMD::AMF::GetInstance()->GetTrace()->GetResultText(res), res);\
 	AMF_LOG_WARNING("%s", exception_buf_->array); \
-	throw exception(std::move(exception_buf_)); \
+	throw ::Plugin::exception(std::move(exception_buf_)); \
+}
+
+#define ThrowFormattedException(format, ...) { \
+	DStr exception_buf_; \
+	dstr_printf(exception_buf_, format, ##__VA_ARGS__); \
+	throw ::Plugin::exception(std::move(exception_buf_)); \
 }
 
 #ifndef __FUNCTION_NAME__
