@@ -357,11 +357,11 @@ std::vector<std::pair<VCEEncoderType, VCEDeviceCapabilities>> Plugin::AMD::VCECa
 	std::vector<std::pair<VCEEncoderType, VCEDeviceCapabilities>> caps;
 	for (auto kv : capabilityMap) {
 		auto apiName = std::get<0>(kv.first);
-		auto adapter = std::get<1>(kv.first);
+		auto adapter_ = std::get<1>(kv.first);
 
 		if (apiName != api->GetName())
 			continue;
-		if (adapter != adapter)
+		if (adapter_ != adapter)
 			continue;
 
 		auto type = std::get<2>(kv.first);
