@@ -46,7 +46,7 @@ std::vector<Adapter> Plugin::API::Host::EnumerateAdapters() {
 	return list;
 }
 
-Plugin::API::Adapter Plugin::API::Host::GetAdapterById(uint32_t idLow, uint32_t idHigh) {
+Plugin::API::Adapter Plugin::API::Host::GetAdapterById(uint32_t idLow, int32_t idHigh) {
 	return Adapter(0, 0, TEXT_T(AMF_UTIL_DEFAULT));
 }
 

@@ -40,7 +40,7 @@ namespace Plugin {
 			virtual APIType GetType() override;
 
 			virtual std::vector<Adapter> EnumerateAdapters() override;
-			virtual Adapter GetAdapterById(uint32_t idLow, uint32_t idHigh) override;
+			virtual Adapter GetAdapterById(uint32_t idLow, int32_t idHigh) override;
 			virtual Adapter GetAdapterByName(std::string name) override;
 
 			virtual void* CreateInstanceOnAdapter(Adapter adapter) override;

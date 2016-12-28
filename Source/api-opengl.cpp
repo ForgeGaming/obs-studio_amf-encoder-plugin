@@ -49,7 +49,7 @@ std::vector<Adapter> Plugin::API::OpenGL::EnumerateAdapters() {
 	return adapters;
 }
 
-Plugin::API::Adapter Plugin::API::OpenGL::GetAdapterById(uint32_t idLow, uint32_t idHigh) {
+Plugin::API::Adapter Plugin::API::OpenGL::GetAdapterById(uint32_t idLow, int32_t idHigh) {
 	for (auto adapter : EnumerateAdapters()) {
 		if ((adapter.idLow == idLow) && (adapter.idHigh == idHigh))
 			return adapter;

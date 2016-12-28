@@ -185,7 +185,7 @@ std::vector<Adapter> Plugin::API::Direct3D11::EnumerateAdapters() {
 	return adapters;
 }
 
-Plugin::API::Adapter Plugin::API::Direct3D11::GetAdapterById(uint32_t idLow, uint32_t idHigh) {
+Plugin::API::Adapter Plugin::API::Direct3D11::GetAdapterById(uint32_t idLow, int32_t idHigh) {
 	for (auto adapter : EnumerateAdapters()) {
 		if ((adapter.idLow == idLow) && (adapter.idHigh == idHigh))
 			return adapter;

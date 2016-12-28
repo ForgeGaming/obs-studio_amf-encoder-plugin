@@ -44,11 +44,12 @@ namespace Plugin {
 		};
 
 		struct Adapter {
-			int32_t idLow, idHigh;
+			uint32_t idLow;
+			int32_t idHigh;
 			std::string Name;
 
 			Adapter() : idLow(0), idHigh(0), Name("Invalid Device") {}
-			Adapter(int32_t idLow, int32_t idHigh, std::string Name) : idLow(idLow), idHigh(idHigh), Name(Name) {}
+			Adapter(uint32_t idLow, int32_t idHigh, std::string Name) : idLow(idLow), idHigh(idHigh), Name(Name) {}
 
 			friend bool operator<(const Plugin::API::Adapter& left, const Plugin::API::Adapter& right);
 			friend bool operator>(const Plugin::API::Adapter& left, const Plugin::API::Adapter& right);
@@ -81,7 +82,7 @@ namespace Plugin {
 			virtual APIType GetType() = 0;
 
 			virtual std::vector<Adapter> EnumerateAdapters() = 0;
-			virtual Adapter GetAdapterById(uint32_t idLow, uint32_t idHigh) = 0;
+			virtual Adapter GetAdapterById(uint32_t idLow, int32_t idHigh) = 0;
 			virtual Adapter GetAdapterByName(std::string name) = 0;
 
 			virtual void* CreateInstanceOnAdapter(Adapter adapter) = 0;
