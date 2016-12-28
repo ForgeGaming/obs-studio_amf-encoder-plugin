@@ -46,7 +46,7 @@ std::vector<Adapter> Plugin::API::Host::EnumerateAdapters() {
 	return list;
 }
 
-Plugin::API::Adapter Plugin::API::Host::GetAdapterById(uint32_t idLow, int32_t idHigh) {
+Plugin::API::Adapter Plugin::API::Host::GetAdapterById(uint32_t /*idLow*/, int32_t /*idHigh*/) {
 	return Adapter(0, 0, TEXT_T(AMF_UTIL_DEFAULT));
 }
 
@@ -58,12 +58,12 @@ void* Plugin::API::Host::CreateInstanceOnAdapter(Adapter adapter) {
 	return nullptr;
 }
 
-Plugin::API::Adapter Plugin::API::Host::GetAdapterForInstance(void* pInstance) {
+Plugin::API::Adapter Plugin::API::Host::GetAdapterForInstance(void* /*pInstance*/) {
 	return Adapter(0, 0, TEXT_T(AMF_UTIL_DEFAULT));
 }
 
-void* Plugin::API::Host::GetContextFromInstance(void* pInstance) {
+void* Plugin::API::Host::GetContextFromInstance(void* /*pInstance*/) {
 	throw std::exception("Host API does not have a Context.");
 }
 
-void Plugin::API::Host::DestroyInstance(void* pInstance) {}
+void Plugin::API::Host::DestroyInstance(void* /*pInstance*/) {}

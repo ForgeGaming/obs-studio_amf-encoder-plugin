@@ -69,15 +69,15 @@ void* Plugin::API::OpenGL::CreateInstanceOnAdapter(Adapter adapter) {
 	return nullptr;
 }
 
-void Plugin::API::OpenGL::DestroyInstance(void* instance) {
+void Plugin::API::OpenGL::DestroyInstance(void* /*pInstance*/) {
 	return;
 }
 
-Plugin::API::Adapter Plugin::API::OpenGL::GetAdapterForInstance(void* instance) {
+Plugin::API::Adapter Plugin::API::OpenGL::GetAdapterForInstance(void* /*pInstance*/) {
 	return *(EnumerateAdapters().begin());
 }
 
-void* Plugin::API::OpenGL::GetContextFromInstance(void* instance) {
+void* Plugin::API::OpenGL::GetContextFromInstance(void* /*pInstance*/) {
 	return nullptr;
 }
 
