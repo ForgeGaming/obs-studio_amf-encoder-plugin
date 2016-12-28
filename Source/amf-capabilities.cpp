@@ -240,7 +240,8 @@ bool Plugin::AMD::VCECapabilities::Refresh() {
 		for (auto adapter : adapters) {
 			// Create AMF Instance
 			amf::AMFContextPtr amfContext;
-			if (amfFactory->CreateContext(&amfContext) != AMF_OK) {
+			res = amfFactory->CreateContext(&amfContext);
+			if (res != AMF_OK) {
 				AMF_LOG_ERROR("<" __FUNCTION_NAME__ "> CreateContext failed for device '%s', error %ls (code %d).",
 					adapter.Name.c_str(),
 					amfInstance->GetTrace()->GetResultText(res),
