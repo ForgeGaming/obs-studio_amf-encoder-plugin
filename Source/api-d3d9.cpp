@@ -89,6 +89,9 @@ std::vector<Adapter> Plugin::API::Direct3D9::EnumerateAdapters() {
 
 Plugin::API::Adapter Plugin::API::Direct3D9::GetAdapterById(uint32_t idLow, int32_t idHigh) {
 	auto adapters = EnumerateAdapters();
+	if (adapters.empty())
+		ThrowFormattedException("<" __FUNCTION_NAME__ "> Could not get adapter from empty enumeration");
+
 	for (auto adapter : adapters) {
 		if ((adapter.idLow == idLow) && (adapter.idHigh == idHigh))
 			return adapter;
@@ -98,6 +101,9 @@ Plugin::API::Adapter Plugin::API::Direct3D9::GetAdapterById(uint32_t idLow, int3
 
 Plugin::API::Adapter Plugin::API::Direct3D9::GetAdapterByName(std::string name) {
 	auto adapters = EnumerateAdapters();
+	if (adapters.empty())
+		ThrowFormattedException("<" __FUNCTION_NAME__ "> Could not get adapter from empty enumeration");
+
 	for (auto adapter : adapters) {
 		if (adapter.Name == name)
 			return adapter;
