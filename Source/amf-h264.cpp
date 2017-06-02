@@ -207,14 +207,6 @@ Plugin::AMD::VCEEncoder::VCEEncoder(
 			m_MemoryType = VCEMemoryType_DirectX9;
 			res = m_AMFContext->InitDX9(m_API->GetContextFromInstance(m_APIInstance));
 			break;
-		case Plugin::API::APIType_OpenGL:
-			m_MemoryType = VCEMemoryType_OpenGL;
-			res = m_AMFContext->InitOpenGL(m_API->GetContextFromInstance(m_APIInstance), GetDesktopWindow(), nullptr);
-			break;
-		case Plugin::API::APIType_Host:
-			m_MemoryType = VCEMemoryType_Host;
-			m_OpenCL = false;
-			break;
 	}
 	if (res != AMF_OK)
 		ThrowExceptionWithAMFError("<" __FUNCTION_NAME__ "> Initializing Video API failed with error %ls (code %ld).", res);

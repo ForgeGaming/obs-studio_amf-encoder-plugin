@@ -37,10 +37,8 @@ SOFTWARE.
 namespace Plugin {
 	namespace API {
 		enum APIType {
-			APIType_Host,
 			APIType_Direct3D9,
 			APIType_Direct3D11,
-			APIType_OpenGL,
 		};
 
 		struct Adapter {

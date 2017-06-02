@@ -260,25 +260,24 @@ bool Plugin::AMD::VCECapabilities::Refresh() {
 				AMF_LOG_ERROR("<" __FUNCTION_NAME__ "> Unexpected critical exceptionwhile testing adapter '%s' on API '%s'.", adapter.Name, api->GetName());
 				throw;
 			}
+			bool api_handled = false;
 			switch (api->GetType()) {
 				case Plugin::API::APIType_Direct3D11:
 					res = amfContext->InitDX11(api->GetContextFromInstance(apiInst));
+					api_handled = true;
 					break;
 				case Plugin::API::APIType_Direct3D9:
 					res = amfContext->InitDX9(api->GetContextFromInstance(apiInst));
-					break;
-				case Plugin::API::APIType_OpenGL:
-					res = amfContext->InitOpenGL(api->GetContextFromInstance(apiInst), nullptr, nullptr);
-					break;
-				default:
-					res = AMF_OK;
+					api_handled = true;
 					break;
 			}
 			if (res != AMF_OK) {
-				AMF_LOG_ERROR("<" __FUNCTION_NAME__ "> Init failed for device '%s', error %ls (code %d).",
+				AMF_LOG_ERROR("<" __FUNCTION_NAME__ "> Init failed for device '%s', error %ls (code %d)%s",
 					adapter.Name.c_str(),
 					amfInstance->GetTrace()->GetResultText(res),
-					res);
+					res,
+					api_handled ? "." : ": api_handled is false"
+					);
 				continue;
 			}
 

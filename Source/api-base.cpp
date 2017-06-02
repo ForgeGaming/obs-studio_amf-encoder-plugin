@@ -30,8 +30,6 @@ SOFTWARE.
 
 #include "api-d3d9.h"
 #include "api-d3d11.h"
-#include "api-host.h"
-#include "api-opengl.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
@@ -89,16 +87,6 @@ void Plugin::API::Base::Initialize() {
 		s_APIInstances.insert(s_APIInstances.end(), std::make_shared<Direct3D9>());
 	}
 	#endif
-
-	// OpenGL
-	{
-		s_APIInstances.insert(s_APIInstances.end(), std::make_shared<OpenGL>());
-	}
-
-	// Host
-	{
-		s_APIInstances.insert(s_APIInstances.end(), std::make_shared<Host>());
-	}
 }
 
 size_t Plugin::API::Base::GetAPICount() {
