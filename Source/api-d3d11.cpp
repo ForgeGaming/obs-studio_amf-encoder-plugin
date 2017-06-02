@@ -186,19 +186,21 @@ std::vector<Adapter> Plugin::API::Direct3D11::EnumerateAdapters() {
 }
 
 Plugin::API::Adapter Plugin::API::Direct3D11::GetAdapterById(uint32_t idLow, int32_t idHigh) {
-	for (auto adapter : EnumerateAdapters()) {
+	auto adapters = EnumerateAdapters();
+	for (auto adapter : adapters) {
 		if ((adapter.idLow == idLow) && (adapter.idHigh == idHigh))
 			return adapter;
 	}
-	return *(EnumerateAdapters().begin());
+	return adapters.front();
 }
 
 Plugin::API::Adapter Plugin::API::Direct3D11::GetAdapterByName(std::string name) {
-	for (auto adapter : EnumerateAdapters()) {
+	auto adapters = EnumerateAdapters();
+	for (auto adapter : adapters) {
 		if (adapter.Name == name)
 			return adapter;
 	}
-	return *(EnumerateAdapters().begin());
+	return adapters.front();
 }
 
 struct Direct3D11Instance {
