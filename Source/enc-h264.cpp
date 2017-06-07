@@ -156,12 +156,12 @@ bool Plugin::Interface::H264Interface::encode(void *data, struct encoder_frame *
 void Plugin::Interface::H264Interface::get_defaults(obs_data_t *data) {
 	#pragma region OBS - Enforce Streaming Service Restrictions
 	obs_data_set_default_int(data, "bitrate", -1);
-	obs_data_set_default_int(data, "keyint_sec", -1);
+	obs_data_set_default_double(data, "keyint_sec", -1);
 	obs_data_set_default_string(data, "rate_control", "");
 	obs_data_set_default_string(data, "profile", "");
 	obs_data_set_default_string(data, "preset", "");
 	obs_data_set_int(data, "bitrate", -1);
-	obs_data_set_int(data, "keyint_sec", -1);
+	obs_data_set_double(data, "keyint_sec", -1);
 	obs_data_set_string(data, "rate_control", "");
 	obs_data_set_string(data, "profile", "");
 	obs_data_set_string(data, "preset", "");
@@ -1691,13 +1691,13 @@ bool Plugin::Interface::H264Interface::update(obs_data_t* data) {
 			// IDR-Period (Keyframes)
 			uint32_t fpsNum = m_VideoEncoder->GetFrameRate().first;
 			uint32_t fpsDen = m_VideoEncoder->GetFrameRate().second;
-			if (obs_data_get_int(data, "keyint_sec") != -1) {
-				m_VideoEncoder->SetIDRPeriod((uint32_t)(obs_data_get_int(data, "keyint_sec") * ((double_t)fpsNum / (double_t)fpsDen)));
+			if (obs_data_get_double(data, "keyint_sec") != -1) {
+				m_VideoEncoder->SetIDRPeriod((uint32_t)(obs_data_get_double(data, "keyint_sec") * ((double_t)fpsNum / (double_t)fpsDen)));
 
-				obs_data_set_double(data, AMF_H264_KEYFRAME_INTERVAL, (double_t)obs_data_get_int(data, "keyint_sec"));
-				obs_data_set_int(data, AMF_H264_IDR_PERIOD, (uint32_t)(obs_data_get_int(data, "keyint_sec") * ((double_t)fpsNum / (double_t)fpsDen)));
+				obs_data_set_double(data, AMF_H264_KEYFRAME_INTERVAL, (double_t)obs_data_get_double(data, "keyint_sec"));
+				obs_data_set_int(data, AMF_H264_IDR_PERIOD, (uint32_t)(obs_data_get_double(data, "keyint_sec") * ((double_t)fpsNum / (double_t)fpsDen)));
 			} else {
-				obs_data_set_int(data, "keyint_sec", (uint64_t)(m_VideoEncoder->GetIDRPeriod() / ((double_t)fpsNum / (double_t)fpsDen)));
+				obs_data_set_double(data, "keyint_sec", (uint64_t)(m_VideoEncoder->GetIDRPeriod() / ((double_t)fpsNum / (double_t)fpsDen)));
 			}
 		}
 		#pragma endregion OBS Enforce Streaming Service Settings
