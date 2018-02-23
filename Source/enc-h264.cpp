@@ -1396,13 +1396,18 @@ Plugin::Interface::H264Interface::H264Interface(obs_data_t* data, obs_encoder_t*
 	uint32_t m_cfgFPSnum = voi->fps_num;
 	uint32_t m_cfgFPSden = voi->fps_den;
 
+	struct video_scale_info info{};
+	if (!obs_encoder_get_video_conversion(encoder, &info))
+		AMF_LOG_WARNING("update_params: failed to get video conversion");
+	get_video_info(&info);
+
 	//////////////////////////////////////////////////////////////////////////
 	/// Initialize Encoder
 	bool debug = obs_data_get_bool(data, AMF_H264_DEBUG);
 	Plugin::AMD::AMF::GetInstance()->EnableDebugTrace(debug);
 
 	VCEColorFormat surfFormat = VCEColorFormat_NV12;
-	switch (voi->format) {
+	switch (info.format) {
 		case VIDEO_FORMAT_NV12:
 			surfFormat = VCEColorFormat_NV12;
 			break;
@@ -1430,8 +1435,8 @@ Plugin::Interface::H264Interface::H264Interface(obs_data_t* data, obs_encoder_t*
 	m_VideoEncoder->SetQualityPreset((VCEQualityPreset)obs_data_get_int(data, AMF_H264_QUALITY_PRESET));
 
 	/// Frame
-	m_VideoEncoder->SetColorProfile(voi->colorspace == VIDEO_CS_709 ? VCEColorProfile_709 : VCEColorProfile_601);
-	try { m_VideoEncoder->SetFullRangeColorEnabled(voi->range == VIDEO_RANGE_FULL); } catch (...) {}
+	m_VideoEncoder->SetColorProfile(info.colorspace == VIDEO_CS_709 ? VCEColorProfile_709 : VCEColorProfile_601);
+	try { m_VideoEncoder->SetFullRangeColorEnabled(info.range == VIDEO_RANGE_FULL); } catch (...) {}
 	m_VideoEncoder->SetResolution(m_cfgWidth, m_cfgHeight);
 	m_VideoEncoder->SetFrameRate(m_cfgFPSnum, m_cfgFPSden);
 	m_VideoEncoder->SetScanType((VCEScanType)obs_data_get_int(data, AMF_H264_SCANTYPE)); /// Progressive or Interlaced
