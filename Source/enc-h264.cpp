@@ -1399,7 +1399,6 @@ Plugin::Interface::H264Interface::H264Interface(obs_data_t* data, obs_encoder_t*
 	struct video_scale_info info{};
 	if (!obs_encoder_get_video_conversion(encoder, &info))
 		AMF_LOG_WARNING("update_params: failed to get video conversion");
-	get_video_info(&info);
 
 	//////////////////////////////////////////////////////////////////////////
 	/// Initialize Encoder
